@@ -1,119 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gallery App</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
-
-        canvas {
-            max-width: 600px;
-            margin-bottom: 20px;
-        }
-
-        #lengthContainer {
-            margin: 20px;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            text-align: center;
-        }
-
-        #lengthButton {
-            padding: 10px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        #lengthButton:hover {
-            background-color: #45a049;
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            canvas {
-                max-width: 100%;
-                margin-bottom: 10px;
-            }
-
-            #lengthContainer {
-                max-width: 100%;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery</title>
+  <!-- Include Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <canvas id="statusChart"></canvas>
-    <button id="lengthButton" onclick="showLength()">Show Gallery Length</button>
-    <div id="lengthContainer"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            fetch('https://asia-southeast2-testlogin-366704.cloudfunctions.net/getgallery')
-                .then(response => response.json())
-                .then(data => {
-                    // Count true and false statuses
-                    let trueCount = 0;
-                    let falseCount = 0;
+<body class="bg-gray-100">
 
-                    data.data.forEach(item => {
-                        if (item.status) {
-                            trueCount++;
-                        } else {
-                            falseCount++;
-                        }
-                    });
+  <div id="app" class="container mx-auto p-4">
+    <!-- Gallery cards will be appended here dynamically -->
+  </div>
 
-                    // Create a bar chart
-                    const ctx = document.getElementById('statusChart').getContext('2d');
-                    const chart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: ['True', 'False'],
-                            datasets: [{
-                                label: 'Gallery Item Status',
-                                data: [trueCount, falseCount],
-                                backgroundColor: ['#4CAF50', '#FF5733'],
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
-                            }
-                        }
-                    });
+  <script>
+    // Fetch data from the API endpoint
+    fetch('https://asia-southeast2-testlogin-366704.cloudfunctions.net/getgallery')
+      .then(response => response.json())
+      .then(data => {
+        // Check if the status is true
+        if (data.status) {
+          // Get the app element
+          const appElement = document.getElementById('app');
 
-                    // Store the data length in a global variable
-                    window.galleryLength = data.data.length;
-                })
-                .catch(error => console.error('Error fetching data:', error));
-        });
-
-        function showLength() {
-            const lengthContainer = document.getElementById('lengthContainer');
-            lengthContainer.textContent = `The length of the gallery is: ${window.galleryLength}`;
+          // Loop through the data array
+          data.data.forEach(item => {
+            // Check if the item status is true
+            if (item.status) {
+              const card = document.createElement('div');
+              card.className = 'bg-white p-4 mb-4 shadow-lg rounded-md'; // Updated shadow and added rounded corners
+              card.innerHTML = `
+                <h2 class="text-xl font-bold mb-4 text-blue-600">${item.title}</h2>
+                <p class="text-gray-600 mb-4">${item.description}</p>
+                <img src="${item.image}" alt="${item.title}" class="w-full h-40 object-cover mb-4 rounded-md">
+              `;
+              appElement.appendChild(card);
+            }
+          });
         }
-    </script>
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  </script>
+
 </body>
+
 </html>
