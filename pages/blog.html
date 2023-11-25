@@ -3,116 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Status Chart</title>
+    <title>Blogs</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #f4f4f4;
+        .blog-card {
+            width: 200px;
         }
 
-        #chartContainer {
-            width: 600px;
-            height: 400px;
-            margin-bottom: 20px;
-        }
-
-        #blogDetails {
-            max-width: 800px;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        #blogDetails p {
-            margin: 5px 0;
-        }
-
-        #totalEntries {
-            background-color: #3498db;
-            color: white;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+        .blog-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
         }
     </style>
 </head>
-<body>
-    <canvas id="chartContainer"></canvas>
-
-    <div id="totalEntries">
-        <!-- Total length of blog entries will be displayed here -->
+<body class="bg-gray-100 p-4">
+    <div>
+        <input type="text" id="searchInput" class="p-2 mb-2 w-full" placeholder="Search by blog title">
     </div>
 
-    <div id="blogDetails">
-        <!-- Blog details will be displayed here -->
+    <div class="flex justify-center">
+        <div id="blogList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4"></div>
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Fetch data from the API
-            fetch('https://asia-southeast2-testlogin-366704.cloudfunctions.net/getallblog')
-                .then(response => response.json())
-                .then(apiResponse => {
-                    const chartData = apiResponse.data.map(entry => ({
-                        title: entry.title,
-                        status: entry.status
-                    }));
+        // Fetch data from the API and populate the blog details
+        fetch('https://asia-southeast2-testlogin-366704.cloudfunctions.net/getallblog')
+            .then(response => response.json())
+            .then(data => {
+                const blogList = document.getElementById('blogList');
+                const searchInput = document.getElementById('searchInput');
+                console.log(data);
 
-                    // Display total length of blog entries
-                    const totalEntriesElement = document.getElementById('totalEntries');
-                    totalEntriesElement.textContent = `Total Entries: ${chartData.length}`;
+                const displayBlogs = (blogs) => {
+                    blogList.innerHTML = '';
+                    blogs.filter(item => item.status).forEach(blog => {
+                        const blogCard = document.createElement('div');
+                        blogCard.className = 'bg-white rounded-lg shadow-md blog-card p-2';
 
-                    // Separate data based on status
-                    const freeData = chartData.filter(entry => entry.status === true);
-                    const falseData = chartData.filter(entry => entry.status === false);
+                        const blogContent = blog.content[0]; // Assuming there is only one content in each blog
+                        blogCard.innerHTML = `
+    <img src="${blogContent.image}" alt="Blog Image" class="blog-image">
+    <div class="p-2">
+        <h2 class="text-base font-bold mb-1">${blog.title}</h2>
+        <p class="text-sm text-gray-600 mb-1">${blogContent.description}</p>
+        <p class="text-sm text-gray-600 mb-1">${blog.tanggal}</p>
+        
+        <div class="content-details">
+            <p class="text-sm text-gray-600 mb-1">Content ID: ${blogContent.id}</p>
+            <p class="text-sm text-gray-600 mb-1">Content Text: ${blogContent.content}</p>
+            <p class="text-sm text-gray-600 mb-1">Content Text: ${blogContent.image}</p>
 
-                    // Display the chart using Chart.js
-                    const ctx = document.getElementById('chartContainer').getContext('2d');
-                    const chart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: ['Free', 'False'],
-                            datasets: [
-                                {
-                                    label: 'Status',
-                                    backgroundColor: ['green', 'red'],
-                                    data: [freeData.length, falseData.length]
-                                }
-                            ]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    max: chartData.length // Adjust the max value as needed
-                                }
-                            }
-                        }
+            <p class="text-sm text-gray-600 mb-1">Content Status: ${blogContent.status}</p>
+        </div>
+    </div>
+`;
+
+
+
+
+                        blogList.appendChild(blogCard);
                     });
+                };
 
-                    // Display blog details
-                    const blogDetailsElement = document.getElementById('blogDetails');
-                    blogDetailsElement.innerHTML = '<h2>Blog Details</h2>';
-                    chartData.forEach(entry => {
-                        blogDetailsElement.innerHTML += `
-                            <div>
-                                <p><strong>Title:</strong> ${entry.title}</p>
-                                <p><strong>Status:</strong> ${entry.status ? 'Free' : 'False'}</p>
-                            </div>
-                        `;
-                    });
-                })
-                .catch(error => console.error('Error fetching data:', error));
-        });
+                displayBlogs(data.data);
+
+                // Filter blogs based on search input
+                searchInput.addEventListener('input', () => {
+                    const searchValue = searchInput.value.trim().toLowerCase();
+                    const filteredBlogs = data.data.filter(blog => blog.title.toLowerCase().includes(searchValue));
+                    displayBlogs(filteredBlogs);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
     </script>
-
-    <!-- Include Chart.js library -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>

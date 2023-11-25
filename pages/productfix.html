@@ -3,167 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product App</title>
+    <title>Products</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
+        .product-card {
+            width: 200px;
         }
 
-        canvas {
-            max-width: 800px;
-            margin-bottom: 20px;
-        }
-
-        #lengthContainer {
-            margin: 20px;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            text-align: center;
-        }
-
-        #productTable {
-            width: 80%;
-            margin-top: 20px;
-            border-collapse: collapse;
-        }
-
-        #productTable th, #productTable td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        #productTable th {
-            background-color: #f2f2f2;
+        .product-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
         }
     </style>
 </head>
-<body>
-    <canvas id="statusChart"></canvas>
-    <div id="lengthContainer"></div>
-    <table id="productTable">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nomor ID</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>Size</th>
-                <th>Image</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+<body class="bg-gray-100 p-4">
+    <div>
+        <input type="text" id="searchInput" class="p-2 mb-2 w-full" placeholder="Search by product name">
+    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <div class="flex justify-center">
+        <div id="productList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+    </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            fetch('https://asia-southeast2-testlogin-366704.cloudfunctions.net/getallproduct')
-                .then(response => response.json())
-                .then(data => {
-                    // Count true and false statuses
-                    let trueCount = 0;
-                    let falseCount = 0;
+        // Fetch data from the API and populate the product details
+        fetch('https://asia-southeast2-testlogin-366704.cloudfunctions.net/getallproduct')
+            .then(response => response.json())
+            .then(data => {
+                const productList = document.getElementById('productList');
+                const searchInput = document.getElementById('searchInput');
 
-                    // Create table rows
-                    const tableBody = document.querySelector('#productTable tbody');
-                    data.data.forEach(item => {
-                        const row = document.createElement('tr');
-                        const idCell = document.createElement('td');
-                        idCell.textContent = item.ID;
-                        const nomorIdCell = document.createElement('td');
-                        nomorIdCell.textContent = item.nomorid;
-                        const nameCell = document.createElement('td');
-                        nameCell.textContent = item.name;
-                        const descriptionCell = document.createElement('td');
-                        descriptionCell.textContent = item.description;
-                        const priceCell = document.createElement('td');
-                        priceCell.textContent = item.price;
-                        const stockCell = document.createElement('td');
-                        stockCell.textContent = item.stock;
-                        const sizeCell = document.createElement('td');
-                        sizeCell.textContent = item.size;
-                        const imageCell = document.createElement('td');
-                        imageCell.textContent = item.image;
-                        const statusCell = document.createElement('td');
-                        statusCell.textContent = item.status ? 'True' : 'False';
+                const displayProducts = (products) => {
+                    productList.innerHTML = '';
+                    products.filter(item => item.status).forEach(product => {
+                        const productCard = document.createElement('div');
+                        productCard.className = 'bg-white rounded-lg shadow-md product-card p-2';
 
-                        row.appendChild(idCell);
-                        row.appendChild(nomorIdCell);
-                        row.appendChild(nameCell);
-                        row.appendChild(descriptionCell);
-                        row.appendChild(priceCell);
-                        row.appendChild(stockCell);
-                        row.appendChild(sizeCell);
-                        row.appendChild(imageCell);
-                        row.appendChild(statusCell);
+                        productCard.innerHTML = `
+                            <img src="${product.image}" alt="Product Image" class="product-image">
+                            <div class="p-2">
+                                <h2 class="text-base font-bold mb-1">${product.name}</h2>
+                                <p class="text-sm text-gray-600 mb-1">${product.description}</p>
+                                <p class="text-sm text-gray-800 font-bold mb-1">Price: $${product.price}</p>
+                                <p class="text-sm text-gray-800 font-bold mb-1">Size: ${product.size}</p>
+                                <p class="text-sm text-gray-800 font-bold mb-1">Stock: ${product.stock}</p>
+                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        `;
 
-                        tableBody.appendChild(row);
-
-                        if (item.status) {
-                            trueCount++;
-                        } else {
-                            falseCount++;
-                        }
+                        productList.appendChild(productCard);
                     });
+                };
 
-                    // Create a line chart with two lines for "True" and "False" statuses
-                    const ctx = document.getElementById('statusChart').getContext('2d');
-                    const chart = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: data.data.map(item => item.ID),
-                            datasets: [
-                                {
-                                    label: 'True',
-                                    data: data.data.map(item => item.price),
-                                    fill: true,
-                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                    borderColor: 'rgba(75, 192, 192, 1)',
-                                    borderWidth: 1
-                                },
-                                {
-                                    label: 'False',
-                                    data: data.data.map(item => item.stock), // Adjust the dataset based on your API response
-                                    fill: true,
-                                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                                    borderColor: 'rgba(255, 99, 132, 1)',
-                                    borderWidth: 1
-                                }
-                            ]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    // You may need to adjust the max value based on your data
-                                    // max: Math.max(...data.data.map(item => item.price, item.stock)) + 1
-                                }
-                            }
-                        }
-                    });
+                displayProducts(data.data);
 
-                    // Display the length of the data
-                    const lengthContainer = document.getElementById('lengthContainer');
-                    lengthContainer.textContent = `The length of the product data is: ${data.data.length}`;
-                })
-                .catch(error => console.error('Error fetching data:', error));
-        });
+                // Filter products based on search input
+                searchInput.addEventListener('input', () => {
+                    const searchValue = searchInput.value.trim().toLowerCase();
+                    const filteredProducts = data.data.filter(product => product.name.toLowerCase().includes(searchValue));
+                    displayProducts(filteredProducts);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
     </script>
 </body>
 </html>
