@@ -7,7 +7,10 @@ export default function checkCookie() {
 	alert("Welcome " + username);
 	} else {
 		alert("Biasakan Login Dulu Ya Bang!")
+
+		// ATTENTION : Ini dinyalakan dan body onload check cookies 
 		// window.location.href="https://fancypedia.my.id/theme/signin/";
+
 		window.location.href="../pages/signin.html";
 	}
 }
