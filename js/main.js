@@ -1,11 +1,12 @@
 import getCatalog from "./contentUser/getcatalog.js";
 import getProduct from "./contentUser/getproduct.js";
+// import { getCookie } from "./cookies.js";
 
-import Logout from "./logout.js";
-import checkCookie from "./checkCookie.js";
+// import Logout from "./logout.js";
+// import checkCookie from "./checkCookie.js";
 
-window.Logout = Logout;
-window.checkCookie = checkCookie;
+// window.Logout = Logout;
+// window.checkCookie = checkCookie;
 
 const previewCatalog = document.getElementById('mainCatalog');
 if (previewCatalog) {
@@ -20,3 +21,4 @@ if (previewProduct) {
 } else {
     console.log("Element with ID 'mainProduct' not found. getProduct not executed.");
 }
+
