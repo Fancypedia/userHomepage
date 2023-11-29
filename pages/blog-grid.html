@@ -36,6 +36,32 @@
   <link rel="stylesheet" href="css/style.css">
 
 </head>
+<style>
+	.columns.is-multiline {
+    display: flex;
+    justify-content: center;
+	margin: 0;
+	padding: 0;
+}
+
+#mainCatalog {
+    display: grid;
+    grid-template-columns: repeat(3, 1.5fr);
+    gap: 10px;
+}
+
+#mainCatalog .card {
+    margin: 0;
+    padding: 0;
+}
+
+#mainCatalog img {
+    width: 100%;
+    height: auto;
+}
+
+
+</style>
 
 <body>
 
@@ -154,97 +180,12 @@
    </div>
 </section>
 
+<!-- START MAIN BLOG GRID -->
 <section class="section blog-wrap">
     <div class="container">
         <div class="columns is-multiline">
-	<div class="column is-4-desktop is-6-tablet">
-		<div class="blog-item-content mb-4">
-			<img src="images/blog/blog_1.jpg" alt="" class="w-100">
-
-			<div class="blog-item-content-content mt-3">
-				<span class="text-sm text-color is-uppercase has-text-weight-bold">January 3, 2019</span>
-
-				<h3 class="mb-3"><a href="blog-single.html">Save The Child For New World</a></h3>
-				<p class="mb-5">Non illo quas blanditiis repellendus laboriosam minima animi. Consectetur accusantium pariatur repudiandae!</p>
-
-				<a href="blog-single.html" class="btn btn-small btn-main is-rounded">Learn More</a>
-			</div>
+			<div id="mainCatalog"></div>
 		</div>
-	</div>
-
-	<div class="column is-4-desktop is-6-tablet">
-		<div class="blog-item-content mb-4">
-			<img src="images/blog/blog_2.jpg" alt="" class="w-100">
-
-			<div class="blog-item-content-content mt-3">
-				<span class="text-sm text-color is-uppercase has-text-weight-bold">January 3, 2019</span>   
-
-				<h3 class="mb-3"><a href="blog-single.html">Shelter For Homeless Child</a></h3>
-				<p class="mb-5">Non illo quas blanditiis repellendus laboriosam minima animi. Consectetur accusantium pariatur repudiandae!</p>
-
-				<a href="blog-single.html" class="btn btn-small btn-main is-rounded">Learn More</a>
-			</div>
-		</div>
-	</div>
-
-	<div class="column is-4-desktop is-6-tablet">
-		<div class="blog-item-content mb-4">
-			<img src="images/blog/blog_3.jpg" alt="" class="w-100">
-
-			<div class="blog-item-content-content mt-3">
-				<span class="text-sm text-color is-uppercase has-text-weight-bold">January 3, 2019</span>
-
-				<h3 class="mb-3"><a href="blog-single.html">Pure Water Is More Essential</a></h3>
-				<p class="mb-5">Non illo quas blanditiis repellendus laboriosam minima animi. Consectetur accusantium pariatur repudiandae!</p>
-
-				<a href="blog-single.html" class="btn btn-small btn-main is-rounded">Learn More</a>
-			</div>
-		</div>
-	</div>
-	<div class="column is-4-desktop is-6-tablet">
-		<div class="blog-item-content mb-4">
-			<img src="images/blog/blog_5.jpg" alt="" class="w-100">
-
-			<div class="blog-item-content-content mt-3">
-				<span class="text-sm text-color is-uppercase has-text-weight-bold">January 3, 2019</span>  
-
-				<h3 class="mb-3"><a href="blog-single.html">Medicine For Poor Children</a></h3>
-				<p class="mb-5">Non illo quas blanditiis repellendus laboriosam minima animi. Consectetur accusantium pariatur repudiandae!</p>
-
-				<a href="blog-single.html" class="btn btn-small btn-main is-rounded">Learn More</a>
-			</div>
-		</div>
-	</div>
-
-	<div class="column is-4-desktop is-6-tablet">
-		<div class="blog-item-content mb-4">
-			<img src="images/blog/blog_2.jpg" alt="" class="w-100">
-
-			<div class="blog-item-content-content mt-3">
-				<span class="text-sm text-color is-uppercase has-text-weight-bold">January 3, 2019</span>  
-
-				<h3 class="mb-3"><a href="blog-single.html">Help the Orphan Children</a></h3>
-				<p class="mb-5">Non illo quas blanditiis repellendus laboriosam minima animi. Consectetur accusantium pariatur repudiandae!</p>
-
-				<a href="blog-single.html" class="btn btn-small btn-main is-rounded">Learn More</a>
-			</div>
-		</div>
-	</div>
-	<div class="column is-4-desktop is-6-tablet">
-		<div class="blog-item-content mb-4">
-			<img src="images/blog/blog_4.jpg" alt="" class="w-100">
-
-			<div class="blog-item-content-content mt-3">
-				<span class="text-sm text-color is-uppercase has-text-weight-bold">January 3, 2019</span> 
-
-				<h3 class="mb-3"><a href="blog-single.html">Education For Poor Children</a></h3>
-				<p class="mb-5">Non illo quas blanditiis repellendus laboriosam minima animi. Consectetur accusantium pariatur repudiandae!</p>
-
-				<a href="blog-single.html" class="btn btn-small btn-main is-rounded">Learn More</a>
-			</div>
-		</div>
-	</div>
-</div>
 
         <div class="columns mt-5">
             <div class="column is-12">
@@ -260,6 +201,7 @@
         </div>
     </div>
 </section>
+<!-- END MAIN BLOG GRID -->
 
 <!-- footer Start -->
 <footer class="footer section">
@@ -365,6 +307,10 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkeLMlsiwzp6b3Gnaxd86lvakimwGA6UA&callback=initMap"></script>    
     
     <script type="module" src="js/script.js"></script>
+
+	<!-- JS BUATAN SENDIRI -->
+    <script type="module" src="../js/main.js"></script>
+    <!-- <script type="module" src="../js/contentUser/getcatalog.js"></script> -->
 
   </body>
   </html>
