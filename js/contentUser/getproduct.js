@@ -1,13 +1,14 @@
-import { getallblog } from "../gudangAPI.js"
+import { getallproduct } from "../gudangAPI.js"
 
-export default function getCatalog() {
+export default function getProduct() {
     // Fetch GET request
-    return fetch(getallblog, {
+    return fetch(getallproduct, {
         method: 'GET',
     })
     .then(response => response.json())
     .then(data => {
-        const maincatalog = document.getElementById('mainCatalog');
+        const maincatalog = document.getElementById('mainProduct');
+        const searchInput = document.getElementById('searchInput');
 
     const displayProducts = (products) => {
         maincatalog.innerHTML = '';
@@ -21,12 +22,13 @@ export default function getCatalog() {
                     <img src=${product.image} alt="" class="w-100">
         
                     <div class="blog-item-content-content mt-3">
-                        <span class="text-sm text-color is-uppercase has-text-weight-bold">${product.content_one}</span>
+                        <span class="text-sm text-color is-uppercase has-text-weight-bold">${product.name}</span>
         
-                        <h3 class="mb-3"><a href="blog-single.html">${product.content_two}</a></h3>
-                        <p class="mb-5">${product.description}</p>
+                        <h3 class="mb-3"><a href="blog-single.html">${product.description}</a></h3>
+                        <p class="mb-5">${product.price}</p>
+                        <p class="mb-5">${product.size}</p>
+                        <p class="mb-5">${product.stock}</p>
         
-                        <a href="blog-single.html" class="btn btn-small btn-main is-rounded">${product.description_two}</a>
                     </div>
                 </div>
             </div>
@@ -37,5 +39,13 @@ export default function getCatalog() {
     };
 
     displayProducts(data.data);
+
+
+    // Filter products based on search input
+    searchInput.addEventListener('input', () => {
+        const searchValue = searchInput.value.trim().toLowerCase();
+        const filteredProducts = data.data.filter(product => product.name.toLowerCase().includes(searchValue));
+        displayProducts(filteredProducts);
+    });
 })
 }

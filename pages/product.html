@@ -44,18 +44,18 @@
 	padding: 0;
 }
 
-#mainCatalog {
+#mainProduct {
     display: grid;
     grid-template-columns: repeat(3, 1.5fr);
     gap: 10px;
 }
 
-#mainCatalog .card {
+#mainProduct .card {
     margin: 0;
     padding: 0;
 }
 
-#mainCatalog img {
+#mainProduct img {
     width: 100%;
     height: auto;
 }
@@ -169,7 +169,7 @@
          <div class="column is-12">
             <div class="block has-text-centered">
                <span class="text-white">Our blog</span>
-               <h1 class="is-capitalize text-lg">Blog articles</h1>
+               <h1 class="is-capitalize text-lg">Find Product</h1>
             </div>
          </div>
       </div>
@@ -178,9 +178,12 @@
 
 <!-- START MAIN BLOG GRID -->
 <section class="section blog-wrap">
+	<div>Find Product Here!!!</div><br>
+	<input type="text" id="searchInput" style="width: 250px;" placeholder="Search by product name">
+
     <div class="container">
         <div class="columns is-multiline">
-			<div id="mainCatalog"></div>
+			<div id="mainProduct"></div>
 		</div>
 
         <div class="columns mt-5">
