@@ -2,4 +2,6 @@ export let APIRegistrasi = "https://asia-southeast2-annular-hexagon-401501.cloud
 export let APILogin = "https://asia-southeast2-annular-hexagon-401501.cloudfunctions.net/signin-1fancy";
 
 
+
 export let getallblog = "https://asia-southeast2-testlogin-366704.cloudfunctions.net/getallblog";
+export let getallproduct = "https://asia-southeast2-testlogin-366704.cloudfunctions.net/getallproduct";
