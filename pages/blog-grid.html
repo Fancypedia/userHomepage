@@ -37,7 +37,7 @@
 
 </head>
 <style>
-	.columns.is-multiline {
+	/* .columns.is-multiline {
     display: flex;
     justify-content: center;
 	margin: 0;
@@ -58,7 +58,46 @@
 #mainCatalog img {
     width: 100%;
     height: auto;
+} */
+
+/* Default styles for larger screens */
+.columns.is-multiline {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
 }
+
+#mainCatalog {
+    display: grid;
+    grid-template-columns: repeat(3, 1.5fr);
+    gap: 10px;
+}
+
+#mainCatalog .card {
+    margin: 0;
+    padding: 0;
+}
+
+#mainCatalog img {
+    width: 100%;
+    height: auto;
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+    #mainCatalog {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Media query for even smaller screens */
+@media screen and (max-width: 480px) {
+    #mainCatalog {
+        grid-template-columns: 1fr;
+    }
+}
+
 
 
 </style>
