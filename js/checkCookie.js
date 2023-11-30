@@ -1,9 +1,9 @@
 import { getCookie } from "./cookies.js";
 
 export default function checkCookie() {
-    let password = getCookie("password");
-	if (password != "") {
-	alert("Welcome");
+    let username = getCookie("username");
+	if (username != "") {
+	alert("Welcome " + username);
 	} else {
 		alert("Biasakan Login Dulu Ya Bang!")
 
