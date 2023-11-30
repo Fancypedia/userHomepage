@@ -1,7 +1,7 @@
 import { getCookie } from "./cookies.js";
 
 export default function checkCookie() {
-    let user = getCookie("password");
+    let password = getCookie("password");
 	if (password != "") {
 	alert("Welcome");
 	} else {
