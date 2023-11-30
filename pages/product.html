@@ -37,7 +37,7 @@
 
 </head>
 <style>
-	.columns.is-multiline {
+	/* .columns.is-multiline {
     display: flex;
     justify-content: center;
 	margin: 0;
@@ -58,7 +58,45 @@
 #mainProduct img {
     width: 100%;
     height: auto;
+} */
+
+/* Gaya dasar */
+.columns.is-multiline {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
 }
+
+#mainProduct {
+    display: grid;
+    grid-template-columns: repeat(3, 1.5fr);
+    gap: 10px;
+}
+
+#mainProduct .card {
+    margin: 0;
+    padding: 0;
+}
+
+#mainProduct img {
+    width: 100%;
+    height: auto;
+}
+
+/* Penyesuaian untuk tampilan layar yang lebih kecil */
+@media screen and (max-width: 768px) {
+    #mainProduct {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #mainProduct {
+        grid-template-columns: 1fr;
+    }
+}
+
 
 
 </style>
