@@ -3,7 +3,7 @@ import { getCookie } from "./cookies.js";
 export default function checkCookie() {
     let password = getCookie("password");
 	if (password != "") {
-	alert("Welcome");
+	alert("Welcome to Fancypedia");
 	} else {
 		alert("Biasakan Login Dulu Ya Bang!")
 
